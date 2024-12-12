@@ -2,6 +2,7 @@ import json
 import re
 from urllib.parse import urljoin
 
+from async_lru import alru_cache
 import httpx
 from mcp import McpError, types as types
 
@@ -14,6 +15,7 @@ count_pattern = r"^\d+$"
 freshness_pattern = r"^\d{4}-\d{2}-\d{2}to\d{4}-\d{2}-\d{2}$"
 
 
+@alru_cache(maxsize=128)
 async def web_search(
     query: str,
     count: str = '10', # integer is not supported in MCP Inspector v0.3.0
